@@ -22,7 +22,7 @@ DEFAULT_NAMES = ('verbose_name', 'verbose_name_plural', 'db_table', 'ordering',
                  'unique_together', 'permissions', 'get_latest_by',
                  'order_with_respect_to', 'app_label', 'db_tablespace',
                  'abstract', 'managed', 'proxy', 'swappable', 'auto_created',
-                 'index_together', 'select_on_save')
+                 'index_together', 'select_on_save', 'verbose_name_extended')
 
 
 @python_2_unicode_compatible
