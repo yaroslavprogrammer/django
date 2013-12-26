@@ -2,6 +2,7 @@ from functools import update_wrapper
 from django.http import Http404, HttpResponseRedirect
 from django.contrib.admin import ModelAdmin, actions
 from django.contrib.admin.forms import AdminAuthenticationForm
+from django.contrib.admin.admin_names import change_label
 from django.contrib.auth import logout as auth_logout, REDIRECT_FIELD_NAME
 from django.contrib.contenttypes import views as contenttype_views
 from django.views.decorators.csrf import csrf_protect
@@ -437,7 +438,9 @@ class AdminSite(object):
         # Sort the models alphabetically within each app.
         app_dict['models'].sort(key=lambda x: x['name'])
         context = {
-            'title': _('%s administration') % capfirst(app_label),
+            'title': _('%s administration') % capfirst(
+                change_label(app_label)
+            ),
             'app_list': [app_dict],
         }
         context.update(extra_context or {})

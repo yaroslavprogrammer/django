@@ -6,10 +6,12 @@ from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.admin import helpers
 from django.contrib.admin.util import get_deleted_objects, model_ngettext
+from django.contrib.admin.admin_names import extended_verbose_name
 from django.db import router
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy, ugettext as _
+
 
 def delete_selected(modeladmin, request, queryset):
     """
@@ -53,7 +55,9 @@ def delete_selected(modeladmin, request, queryset):
         return None
 
     if len(queryset) == 1:
-        objects_name = force_text(opts.verbose_name)
+        objects_name = force_text(
+            extended_verbose_name(request, opts, 'delete')
+        )
     else:
         objects_name = force_text(opts.verbose_name_plural)
 

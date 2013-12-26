@@ -18,6 +18,7 @@ from django.contrib.admin.exceptions import DisallowedModelAdminLookup
 from django.contrib.admin.options import IncorrectLookupParameters, IS_POPUP_VAR
 from django.contrib.admin.util import (quote, get_fields_from_path,
     lookup_needs_distinct, prepare_lookup_value)
+from django.contrib.admin.admin_names import extended_verbose_name
 
 # Changelist settings
 ALL_VAR = 'all'
@@ -108,7 +109,9 @@ class ChangeList(six.with_metaclass(RenameChangeListMethods)):
             title = ugettext('Select %s')
         else:
             title = ugettext('Select %s to change')
-        self.title = title % force_text(self.opts.verbose_name)
+        self.title = title % force_text(
+            extended_verbose_name(request, self.opts, 'change')
+        )
         self.pk_attname = self.lookup_opts.pk.attname
 
     @property

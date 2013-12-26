@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_urls admin_static admin_modify %}
+{% load i18n admin_urls admin_static admin_modify admin_names %}
 
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
@@ -16,9 +16,9 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|capfirst|escape }}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|admin_change_label|capfirst|escape }}</a>
 &rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
-&rsaquo; {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+&rsaquo; {% if add %}{% trans 'Add' %} {% admin_verbose_name opts 'add' %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 </div>
 {% endblock %}
 {% endif %}

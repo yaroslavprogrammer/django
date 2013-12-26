@@ -11,6 +11,7 @@ from django.contrib.admin.util import (unquote, flatten_fieldsets, get_deleted_o
 from django.contrib.admin import validation
 from django.contrib.admin.templatetags.admin_static import static
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+from django.contrib.admin.admin_names import extended_verbose_name
 from django.contrib.auth import get_permission_codename
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied, ValidationError, FieldError
@@ -1171,7 +1172,9 @@ class ModelAdmin(BaseModelAdmin):
             media = media + inline_admin_formset.media
 
         context = {
-            'title': _('Add %s') % force_text(opts.verbose_name),
+            'title': _('Add %s') % force_text(
+                extended_verbose_name(request, opts, 'add')
+            ),
             'adminform': adminForm,
             'is_popup': IS_POPUP_VAR in request.REQUEST,
             'media': media,
@@ -1262,7 +1265,9 @@ class ModelAdmin(BaseModelAdmin):
             media = media + inline_admin_formset.media
 
         context = {
-            'title': _('Change %s') % force_text(opts.verbose_name),
+            'title': _('Change %s') % force_text(
+                extended_verbose_name(request, opts, 'change')
+            ),
             'adminform': adminForm,
             'object_id': object_id,
             'original': obj,
