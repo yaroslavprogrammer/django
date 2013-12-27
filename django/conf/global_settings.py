@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # Default Django settings. Override these with settings in the module
 # pointed-to by the DJANGO_SETTINGS_MODULE environment variable.
 
@@ -23,6 +25,43 @@ USE_ETAGS = False
 # People who get code error notifications.
 # In the format (('Full Name', 'email@example.com'), ('Full Name', 'anotheremail@example.com'))
 ADMINS = ()
+
+# Replace message string for specific languages
+ADMIN_MESSAGE_REPLACE_SETTINGS = {
+    'uk': {
+        'he': [
+            (u'було', u'був'),
+            (u'додано', u'доданий'),
+        ],
+        'she': [
+            (u'був', u'була'),
+            (u'було', u'була'),
+            (u'додано', u'додана'),
+            (u'змінений', u'змінена'),
+            (u'видалений', u'видалена')
+        ],
+        'it': [
+            (u'був', u'було'),
+            (u'додано', u'додане'),
+            (u'змінений', u'змінене'),
+            (u'видалений', u'видалене'),
+        ]
+    },
+    'ru': {
+        'she': [
+            (u'был', u'была'),
+            (u'добавлен', u'добавлена'),
+            (u'изменен', u'изменена'),
+            (u'удален', u'удалена'),
+        ],
+        'it': [
+            (u'был', u'было'),
+            (u'добавлен', u'добавлено'),
+            (u'изменен', u'изменено'),
+            (u'удален', u'удалено'),
+        ]
+    }
+}
 
 # Tuple of IP addresses, as strings, that:
 #   * See debug comments, when DEBUG is true

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import copy
 import operator
 from functools import partial, reduce, update_wrapper
@@ -843,6 +845,19 @@ class ModelAdmin(BaseModelAdmin):
                 levels_repr = ', '.join('`%s`' % l for l in levels)
                 raise ValueError('Bad message level string: `%s`. '
                         'Possible values are: %s' % (level, levels_repr))
+
+        opts = self.model._meta
+        verbose_name_extended = getattr(opts, 'verbose_name_extended', {})
+        language = getattr(request, 'LANGUAGE_CODE', None)
+        options = verbose_name_extended.get(language, {})
+        gender = options.get('gender')
+        message_replace_settings = getattr(
+            settings, 'ADMIN_MESSAGE_REPLACE_SETTINGS', None)
+
+        if message_replace_settings:
+            rs = message_replace_settings.get(language, {}).get(gender, [])
+            for replace in rs:
+                message = message.replace(replace[0], replace[1])
 
         messages.add_message(request, level, message, extra_tags=extra_tags,
                 fail_silently=fail_silently)
