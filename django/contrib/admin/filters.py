@@ -7,11 +7,13 @@ certain test -- e.g. being a DateField or ForeignKey.
 """
 import datetime
 
+from django import forms
 from django.db import models
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.encoding import smart_text, force_text
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.contrib.admin.widgets import AdminDateWidget
 from django.contrib.admin.util import (get_model_from_relation,
     reverse_field_path, get_limit_choices_to_from_path, prepare_lookup_value)
 from django.contrib.admin.options import IncorrectLookupParameters
@@ -346,6 +348,80 @@ class DateFieldListFilter(FieldListFilter):
 FieldListFilter.register(
     lambda f: isinstance(f, models.DateField), DateFieldListFilter)
 
+
+class DateRangeForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        field_name = kwargs.pop('field_name')
+        super(DateRangeForm, self).__init__(*args, **kwargs)
+
+        self.fields['%s__gte' % field_name] = forms.DateField(
+            label='', widget=AdminDateWidget(
+                attrs={'placeholder': _('from date')}), localize=True,
+            required=False)
+
+        self.fields['%s__lte' % field_name] = forms.DateField(
+            label='', widget=AdminDateWidget(
+                attrs={'placeholder': _('to date')}), localize=True,
+            required=False)
+
+
+class DateRangeFilter(FieldListFilter):
+    template = 'admin/date_range_filter.html'
+
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        self.lookup_kwarg_since = '%s__gte' % field_path
+        self.lookup_kwarg_upto = '%s__lte' % field_path
+        super(DateRangeFilter, self).__init__(
+            field, request, params, model, model_admin, field_path)
+        self.form = self.get_form(request)
+
+    def choices(self, cl):
+        return []
+
+    def expected_parameters(self):
+        return [self.lookup_kwarg_since, self.lookup_kwarg_upto]
+
+    def get_form(self, request):
+        return DateRangeForm(data=self.used_parameters,
+                             field_name=self.field_path)
+
+    def queryset(self, request, queryset):
+        if self.form.is_valid():
+            # get no null params
+            filter_params = dict(filter(lambda x: bool(x[1]),
+                                        self.form.cleaned_data.items()))
+            return queryset.filter(**filter_params)
+        else:
+            return queryset
+
+FieldListFilter.register(
+    lambda f: isinstance(f, models.DateField), DateRangeFilter)
+
+
+class IntegerRangeForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        field_name = kwargs.pop('field_name')
+        super(IntegerRangeForm, self).__init__(*args, **kwargs)
+
+        # fields
+        self.fields['%s__gte' % field_name] = forms.IntegerField(
+            widget=forms.TextInput(attrs={'placeholder': _('from')}),
+            required=False, localize=True, label='')
+        self.fields['%s__lte' % field_name] = forms.IntegerField(
+            widget=forms.TextInput(attrs={'placeholder': _('to')}),
+            required=False, localize=True, label='')
+
+
+class IntegerRangeFilter(DateRangeFilter):
+    template = 'admin/integer_range_filter.html'
+
+    def get_form(self, request):
+        return IntegerRangeForm(data=self.used_parameters,
+                                field_name=self.field_path)
+
+FieldListFilter.register(
+    lambda f: isinstance(f, models.IntegerField), IntegerRangeFilter)
 
 # This should be registered last, because it's a last resort. For example,
 # if a field is eligible to use the BooleanFieldListFilter, that'd be much

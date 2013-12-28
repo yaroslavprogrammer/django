@@ -838,3 +838,17 @@ table#change-history tbody th {
     color: #666;
 }
 
+/* CHANGELIST */
+
+#changelist-filter p input[type="submit"],
+#changelist-filter p input[type="reset"] {
+    width: 140px;
+}
+
+#changelist-filter p input {
+    width: 132px;
+}
+
+#changelist-filter ul li select {
+    width: 140px;
+}
