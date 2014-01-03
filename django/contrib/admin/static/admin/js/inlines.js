@@ -147,6 +147,24 @@
         .filter(":odd").addClass("row2");
     };
 
+    var correctFbShowInputId = function(row) {
+      // Corrects the first parameter of the FileBrowser.show function
+      // call with the correct corresponding field id. This is necessary
+      // for dynamically-added/unsaved fields since their id is defined
+      // on-the-fly by the code defined in django inlines.js.
+      // See https://github.com/wardi/django-filebrowser-no-grappelli/issues#issue/9
+      var fb_link = row.find("a.fb_show");
+      if(fb_link.length != 0){
+          var fb_field_id_index = fb_link.prev("input").attr("id").split("-");
+          fb_field_id_index = fb_field_id_index[fb_field_id_index.length-2];
+
+          var fb_link_href = fb_link.attr("href");
+          if (fb_link_href.search(/__prefix__/) >= 0) {
+              fb_link.attr("href", fb_link_href.replace(/__prefix__/g, fb_field_id_index));
+          }
+      }
+    };
+
     var reinitDateTimeShortCuts = function() {
       // Reinitialize the calendar and clock widgets by force
       if (typeof DateTimeShortcuts != "undefined") {
@@ -198,6 +216,7 @@
         reinitDateTimeShortCuts();
         updateSelectFilter();
         alternatingRows(row);
+        correctFbShowInputId(row);
       }
     });
 
@@ -212,6 +231,24 @@
         var count = i + 1;
         $(this).html($(this).html().replace(/(#\d+)/g, "#" + count));
       });
+    };
+
+    var correctFbShowInputId = function(row) {
+      // Corrects the first parameter of the FileBrowser.show function
+      // call with the correct corresponding field id. This is necessary
+      // for dynamically-added/unsaved fields since their id is defined
+      // on-the-fly by the code defined in django inlines.js.
+      // See https://github.com/wardi/django-filebrowser-no-grappelli/issues#issue/9
+      var fb_link = row.find("a.fb_show");
+      if(fb_link.length != 0){
+          var fb_field_id_index = fb_link.prev("input").attr("id").split("-");
+          fb_field_id_index = fb_field_id_index[fb_field_id_index.length-2];
+
+          var fb_link_href = fb_link.attr("href");
+          if (fb_link_href.search(/__prefix__/) >= 0) {
+              fb_link.attr("href", fb_link_href.replace(/__prefix__/g, fb_field_id_index));
+          }
+      }
     };
 
     var reinitDateTimeShortCuts = function() {
@@ -264,6 +301,7 @@
         reinitDateTimeShortCuts();
         updateSelectFilter();
         updateInlineLabel(row);
+        correctFbShowInputId(row);
       })
     });
 

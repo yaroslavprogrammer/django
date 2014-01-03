@@ -17,6 +17,6 @@ def extended_verbose_name(request, opts, action=None):
 
 def change_label(label):
     app_labels = getattr(settings, 'APP_LABELS', {})
-    app_name = app_labels.get(label.lower())
+    app_name = app_labels.get(label.lower(), label)
 
-    return app_name if app_name else _(label)
+    return _(app_name)
