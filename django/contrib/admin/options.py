@@ -1502,7 +1502,9 @@ class ModelAdmin(BaseModelAdmin):
                                    current_app=self.admin_site.name)
             return HttpResponseRedirect(post_url)
 
-        object_name = force_text(opts.verbose_name)
+        object_name = force_text(
+            extended_verbose_name(request, opts, 'delete')
+        )
 
         if perms_needed or protected:
             title = _("Cannot delete %(name)s") % {"name": object_name}

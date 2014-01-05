@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from __future__ import unicode_literals
 import re
 import warnings
@@ -126,6 +128,20 @@ class Group(models.Model):
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
+        verbose_name_extended = {
+            'ru': {
+                'add': u'группу',
+                'delete': u'группу',
+                'change': u'группу',
+                'gender': 'she'
+            },
+            'uk': {
+                'add': u'групу',
+                'delete': u'групу',
+                'change': u'групу',
+                'gender': 'she'
+            }
+        }
 
     def __str__(self):
         return self.name
@@ -390,6 +406,20 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+        verbose_name_extended = {
+            'ru': {
+                'add': u'пользователя',
+                'delete': u'пользователя',
+                'change': u'пользователя',
+                'gender': 'he'
+            },
+            'uk': {
+                'add': u'користувача',
+                'delete': u'користувача',
+                'change': u'користувача',
+                'gender': 'he'
+            }
+        }
         abstract = True
 
     def get_absolute_url(self):
