@@ -1738,3 +1738,8 @@ class StackedInline(InlineModelAdmin):
 
 class TabularInline(InlineModelAdmin):
     template = 'admin/edit_inline/tabular.html'
+
+
+class CollapsedStackedInline(StackedInline):
+    class Media:
+        js = ['admin/js/inline_collapse.js']
