@@ -68,6 +68,10 @@ form ul.inline li {
     word-wrap: break-word;
 }
 
+.aligned label.inline {
+    width: auto;
+} 
+
 .aligned ul label {
     display: inline;
     float: none;
