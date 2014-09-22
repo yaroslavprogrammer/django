@@ -84,8 +84,6 @@ form ul.inline li {
 }
 
 form .aligned p, form .aligned ul {
-    margin-left: 7em;
-    padding-left: 30px;
 }
 
 form .aligned table p {
@@ -94,7 +92,6 @@ form .aligned table p {
 }
 
 form .aligned p.help {
-    padding-left: 38px;
 }
 
 .aligned .vCheckboxLabel {
@@ -124,11 +121,9 @@ fieldset .field-box {
 }
 
 form .wide p {
-    margin-left: 15em;
 }
 
 form .wide p.help {
-    padding-left: 38px;
 }
 
 .colM fieldset.wide .vLargeTextField, .colM fieldset.wide .vXMLLargeTextField {
