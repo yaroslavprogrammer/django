@@ -29,6 +29,7 @@ form h4 {
 label {
     font-weight: normal !important;
     color: #666;
+    display: block;
     font-size: 12px;
 }
 
@@ -64,12 +65,12 @@ form ul.inline li {
     display: block;
     padding: 3px 10px 0 0;
     float: left;
-    width: 10%;
+    width: 100%;
     word-wrap: break-word;
 }
 
 .aligned label.inline {
-    width: auto;
+    width: 100%;
 } 
 
 .aligned ul label {
