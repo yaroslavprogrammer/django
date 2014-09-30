@@ -78,6 +78,7 @@
     <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
       {% block search %}{% search_form cl %}{% endblock %}
       {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
+      {% pagination cl %}
 
       {% block filters %}
         {% if cl.has_filters %}
